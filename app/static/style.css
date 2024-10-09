@@ -1,0 +1,168 @@
+body, html {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.4;
+        color: #333;
+        background-color: #f0f4f8;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+    .background-text {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: center;
+        font-size: 48px;
+        color: rgba(255, 0, 0, 0.1);
+        font-weight: bold;
+        pointer-events: none;
+        z-index: -1;
+        overflow: hidden;
+    }
+    .background-text span {
+        margin: 10px;
+        transform: rotate(-45deg);
+    }
+    .container {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 12px;
+        padding: 60px 20px 20px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.1), 0 1px 6px rgba(0,0,0,0.15);
+        width: 95%;
+        max-width: 600px;
+        max-height: 95vh;
+        overflow-y: auto;
+        position: relative;
+        z-index: 1;
+    }
+    h1 {
+        color: #2c3e50;
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 20px;
+        font-size: 1.5em;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    }
+    .file-input-container {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    }
+    .file-input-label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #34495e;
+        font-size: 1em;
+    }
+    #fileInput {
+        width: 100%;
+        padding: 10px;
+        border: 2px dashed #bdc3c7;
+        border-radius: 4px;
+        font-size: 0.9em;
+        transition: all 0.3s ease;
+        background-color: #fff;
+    }
+    #fileInput:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.25);
+    }
+    #fileInput:hover {
+        border-color: #3498db;
+    }
+    #selectedFiles {
+        margin-top: 10px;
+        font-size: 0.9em;
+    }
+    .btn {
+        background-color: #3498db;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1em;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin-top: 15px;
+    }
+    .btn:hover {
+        background-color: #2980b9;
+        transform: translateY(-1px);
+        box-shadow: 0 3px 5px rgba(0,0,0,0.12);
+    }
+    .btn:active {
+        transform: translateY(1px);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    #message, #resultMessage {
+        margin-top: 15px;
+        padding: 10px;
+        border-radius: 6px;
+        font-weight: bold;
+        text-align: left;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        font-size: 0.9em;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+    .success {
+        background-color: #d4edda;
+        color: #155724;
+        box-shadow: 0 2px 4px rgba(21, 87, 36, 0.08);
+    }
+    .error {
+        background-color: #f8d7da;
+        color: #721c24;
+        box-shadow: 0 2px 4px rgba(114, 28, 36, 0.08);
+    }
+    #calculateButton, #downloadButton {
+        display: none;
+    }
+    .loader {
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #3498db;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        animation: spin 1s linear infinite;
+        margin-left: 10px;
+        display: none;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    .back-to-start {
+        position: absolute;
+        top: 10px;
+        left: 0%;
+<!--        transform: translateX(-50%);-->
+        width: auto;
+        padding: 4px 10px;
+        font-size: 0.9em;
+        background-color: ##2980b9;
+        z-index: auto;
+    }
+    .back-to-start:hover {
+        background-color: #27ae60;
+    }

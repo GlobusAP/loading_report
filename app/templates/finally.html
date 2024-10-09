@@ -1,0 +1,401 @@
+<html><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Загрузка стыков</title>
+<style>
+    body, html {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.4;
+        color: #333;
+        background-color: #f0f4f8;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+    .background-text {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: center;
+        font-size: 48px;
+        color: rgba(255, 0, 0, 0.1);
+        font-weight: bold;
+        pointer-events: none;
+        z-index: -1;
+        overflow: hidden;
+    }
+    .background-text span {
+        margin: 10px;
+        transform: rotate(-45deg);
+    }
+    .container {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 12px;
+        padding: 60px 20px 20px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.1), 0 1px 6px rgba(0,0,0,0.15);
+        width: 95%;
+        max-width: 600px;
+        max-height: 95vh;
+        overflow-y: auto;
+        position: relative;
+        z-index: 1;
+    }
+    h1 {
+        color: #2c3e50;
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 20px;
+        font-size: 1.5em;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    }
+    .file-input-container {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    }
+    .file-input-label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #34495e;
+        font-size: 1em;
+    }
+    #fileInput {
+        width: 100%;
+        padding: 10px;
+        border: 2px dashed #bdc3c7;
+        border-radius: 4px;
+        font-size: 0.9em;
+        transition: all 0.3s ease;
+        background-color: #fff;
+    }
+    #fileInput:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.25);
+    }
+    #fileInput:hover {
+        border-color: #3498db;
+    }
+    #selectedFiles {
+        margin-top: 10px;
+        font-size: 0.9em;
+    }
+    .btn {
+        background-color: #3498db;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1em;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin-top: 15px;
+    }
+    .btn:hover {
+        background-color: #2980b9;
+        transform: translateY(-1px);
+        box-shadow: 0 3px 5px rgba(0,0,0,0.12);
+    }
+    .btn:active {
+        transform: translateY(1px);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    #message, #resultMessage {
+        margin-top: 15px;
+        padding: 10px;
+        border-radius: 6px;
+        font-weight: bold;
+        text-align: left;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        font-size: 0.9em;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+    .success {
+        background-color: #d4edda;
+        color: #155724;
+        box-shadow: 0 2px 4px rgba(21, 87, 36, 0.08);
+    }
+    .error {
+        background-color: #f8d7da;
+        color: #721c24;
+        box-shadow: 0 2px 4px rgba(114, 28, 36, 0.08);
+    }
+    #calculateButton, #downloadButton {
+        display: none;
+    }
+    .loader {
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #3498db;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        animation: spin 1s linear infinite;
+        margin-left: 10px;
+        display: none;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    .back-to-start {
+        position: absolute;
+        top: 10px;
+        left: 0%;
+<!--        transform: translateX(-50%);-->
+        width: auto;
+        padding: 4px 10px;
+        font-size: 0.9em;
+        background-color: ##2980b9;
+        z-index: auto;
+    }
+    .back-to-start:hover {
+        background-color: #27ae60;
+    }
+</style>
+</head>
+<body>
+    <div class="background-text">
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+        <span>ММТС</span>
+    </div>
+    <div class="container">
+        <button id="backToStartButton" class="btn back-to-start">В начало</button>
+        <h1>Загрузка стыков</h1>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <div class="file-input-container">
+                <label for="fileInput" class="file-input-label">Выберите 12 CSV файлов для загрузки:</label>
+                <input type="file" id="fileInput" name="files" accept=".csv" multiple required>
+                <div id="selectedFiles"></div>
+            </div>
+            <button type="submit" class="btn" id="uploadButton">Загрузить файлы</button>
+        </form>
+        <div id="message"></div>
+        <button id="calculateButton" class="btn" style="display: none;">
+            Посчитать загрузку
+            <div class="loader" id="calculateLoader"></div>
+        </button>
+        <div id="resultMessage"></div>
+        <button id="downloadButton" class="btn" style="display: none;">
+            Получить итоговые файлы
+            <div class="loader" id="downloadLoader"></div>
+        </button>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const selectedFiles = document.getElementById('selectedFiles');
+        const uploadForm = document.getElementById('uploadForm');
+        const messageElement = document.getElementById('message');
+        const calculateButton = document.getElementById('calculateButton');
+        const resultMessageElement = document.getElementById('resultMessage');
+        const calculateLoader = document.getElementById('calculateLoader');
+        const downloadButton = document.getElementById('downloadButton');
+        const downloadLoader = document.getElementById('downloadLoader');
+        const uploadButton = document.getElementById('uploadButton');
+        const backToStartButton = document.getElementById('backToStartButton');
+
+        fileInput.addEventListener('change', function() {
+            const fileList = Array.from(this.files);
+            selectedFiles.innerHTML = fileList.map(file => `<div>${file.name}</div>`).join('');
+        });
+
+        uploadForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            if (formData.getAll('files').length !== 12) {
+                messageElement.textContent = 'Пожалуйста, выберите ровно 12 файлов.';
+                messageElement.className = 'error';
+                messageElement.style.opacity = '1';
+                return;
+            }
+
+            uploadButton.style.display = 'none';
+
+            fetch('/upload_files', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    messageElement.textContent = 'Файлы успешно загружены!';
+                    messageElement.className = 'success';
+                    calculateButton.style.display = 'flex';
+                } else {
+                    messageElement.textContent = 'Ошибка при загрузке файлов. Пожалуйста, попробуйте снова.';
+                    messageElement.className = 'error';
+                    calculateButton.style.display = 'none';
+                    uploadButton.style.display = 'flex';
+                }
+                messageElement.style.opacity = '1';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                messageElement.textContent = 'Произошла ошибка при отправке запроса.';
+                messageElement.className = 'error';
+                messageElement.style.opacity = '1';
+                calculateButton.style.display = 'none';
+                uploadButton.style.display = 'flex';
+            });
+        });
+
+        calculateButton.addEventListener('click', function() {
+            calculateLoader.style.display = 'inline-block';
+            calculateButton.disabled = true;
+            resultMessageElement.style.opacity = '0';
+            downloadButton.style.display = 'none';
+
+            fetch('/result', {
+                method: 'GET'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    resultMessageElement.textContent = 'Расчет успешно выполнен!';
+                    resultMessageElement.className = 'success';
+                    downloadButton.style.display = 'flex';
+
+                    if (data.not_counted && Object.keys(data.not_counted).length > 0) {
+                        let notCountedMessage = 'Не удалось посчитать следующие элементы:\n';
+                        for (const [key, value] of Object.entries(data.not_counted)) {
+                            notCountedMessage += `${key}: ${value}\n`;
+                        }
+                        resultMessageElement.textContent += '\n\n' + notCountedMessage;
+                    }
+                } else if (data.detail) {
+                    resultMessageElement.textContent = (data.detail);
+                    resultMessageElement.className = 'error';
+                } else {
+                    resultMessageElement.textContent = 'Ошибка при выполнении расчета. Пожалуйста, попробуйте снова.';
+                    resultMessageElement.className = 'error';
+                }
+                resultMessageElement.style.opacity = '1';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                resultMessageElement.textContent = 'Произошла ошибка при отправке запроса на расчет.';
+                resultMessageElement.className = 'error';
+                resultMessageElement.style.opacity = '1';
+            })
+            .finally(() => {
+                calculateLoader.style.display = 'none';
+                calculateButton.disabled = false;
+            });
+        });
+
+        downloadButton.addEventListener('click', function() {
+            downloadLoader.style.display = 'inline-block';
+            downloadButton.disabled = true;
+            downloadButton.style.display = 'none';
+
+            fetch('/download_files', {
+                method: 'GET'
+            })
+            .then(response => {
+                if (response.ok) {
+                    const filename = response.headers.get('Content-Disposition').split('filename=')[1];
+                    return response.blob().then(blob => ({ blob, filename }));
+                }
+                throw new Error('Ошибка при скачивании файлов');
+            })
+            .then(({ blob, filename }) => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = filename || 'excel_files.zip';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                resultMessageElement.textContent = 'Файлы успешно скачаны!';
+                resultMessageElement.className = 'success';
+                resultMessageElement.style.opacity = '1';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                resultMessageElement.textContent = 'Произошла ошибка при скачивании файлов.';
+                resultMessageElement.className = 'error';
+                resultMessageElement.style.opacity = '1';
+                downloadButton.style.display = 'flex';
+            })
+            .finally(() => {
+                downloadLoader.style.display = 'none';
+                downloadButton.disabled = false;
+            });
+        });
+
+        backToStartButton.addEventListener('click', function() {
+            window.location.href = '/';
+        });
+    </script>
+</body>
+</html>

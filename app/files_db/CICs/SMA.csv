@@ -1,0 +1,160 @@
+ADS(5222),61
+AIST_Toliatty(5215),92
+Atel_Perm(5249),30
+BashInformSvyaz(5201),61
+CTSTC_Saratov(5322),30
+Ekvant_Samara(5218),30
+InfoLada(5292),61
+InterTel_Samara(5216),30
+Konvers_Saratov_Z(5228),30
+Megaf_Sarat_Zona(5287),30
+Megafon_Cheboksary_Z(5330),30
+Megaf_SMA_MG_OUT(5326),155
+Megafon_Igevsk_Zone(5340),30
+Megafon_IoshkarOla_Zona(5345),30
+Megafon_Kazan(5313),30
+Megafon_Kirov(5338),30
+Megafon_Orenburg_Zon(5328),30
+Megafon_Penza(5331),30
+Megafon_Samara(5267),30
+Megafon_Saransk_Zona(5335),30
+Megafon_Samara_Mob1(5334),30
+Megafon_SMA_MG(5317),247
+Megafon_Ufa(5311),30
+Megafon_Ulyanovsk_Z(5329),30
+Megafon_Saratov_out2(5332),30
+Megafon_SMA_MG_MVNO(5351),31
+Megafon N.Novgorod(5358),30
+MTC_Cheboks(5279),30
+MTC_Eshkarala_SP(5274),30
+MTC_Izevsk_slc0(5301),30
+MTC_Kazan(5264),30
+MTC_Kirov(5310),30
+MTC_Orenburg(5309),30
+MTS_Perm-SP(5315),30
+MTC_Samara(5271),61
+MTC_Saransk(5336),30
+MTC_Saratov(5270),30
+MTC_Ufa_Zona(5318),61
+MTC_Ylianvsk(5319),30
+MTC-Nigni Novgorov(5280),30
+MTS-Ijevsk_Zona(5303),30
+MTS-Kirov_Zona(5349),30
+MTS-NNovgorod_Zona(5348),30
+MTS-Penza_Zona(5236),30
+MTS-Perm_Zona(5347),30
+MTS-Samara_Zona(5346),61
+MTS-Yfa-SP(5285),60
+MTS-Ylyanovsk_Zona(5278),30
+MTT_Samara_MG-SP(5337),30
+Vimpelcom_Penza-spSLC1(5254),309
+Tele2_Saransk_IN(5357),62
+Rostelecom_SMA_I(5325),61
+RTC_Orenburg(5281),30
+RTK-Igevsk_Zona(5204),61
+Sinterra_Perm(5295),30
+SIP-CLK-INT-SS(3),2000
+SIP-CLK-NAT-SS(15),2000
+SIP-IRK-INT-SS(4),2000
+SIP-KBK-NAT-SS(17),2000
+SIP-MSK-INT-SS(1),2000
+SIP-MSK-NAT-SS(11),3000
+SIP-NSK-NAT-SS(16),2000
+SIP-SPB-INT-SS(2),2000
+SIP-SPB-NAT-SS(12),2000
+Tele2-Cheboks_IN(5230),123
+Tele2_Saransk_OUT(5356),61
+Sovintel_Izhevsk(5327),30
+Vimpelkom_Sma_Zona(5229),30
+Sovintel_Ufa(5247),30
+Svzatminf_Ulnvsk(5312),30
+T2-Mobile_Eshkarala-SP(5263),30
+Tele2-Cheboks_OUT(5225),31
+Tele-2_kirov_IN(5320),185
+Tele-2_Kirov_OUT(5321),93
+TELE2_Igevsk_in(5237),92
+Tele2_Igevsk_out(5242),154
+TELE2_N.Novgorod(5256),278
+TELE2_N.Novgorod(5259),216
+Tele2-Orenb_NEW_IN(5361),61
+Tele2-Orenbyrg_OUT(5307),31
+Telecmm 21_Kazan(5342),30
+Teleset_Kazan(5323),31
+Tele2-Kazan_newIN(5353),62
+Tele2-Kazan_new_OUT(5352),61
+To CLK-INT S(503),61
+To CLK-NAT S(515),216
+To IRK-INT S(504),30
+To KBK-NAT S(517),61
+To MSK-INT S(501),61
+To MSK-NAT S(511),556
+To NSK-NAT S(516),61
+To SPB-INT S(502),61
+To SPB-NAT S(512),61
+To TatTelecom(5200),91
+TRK_TVT_Kazan(5324),30
+TTK-NN(421),300
+Ulianovsk_GSM_1(5220),61
+Ural-Orenburg(5219),30
+Ural-TTK Perm(5296),123
+UralSvInf_Perm(5214),62
+Ural_GSM_Perm(5297),61
+UzhYral_Orenburg(415),67
+Vimp_Kanash_Zona(5286),30
+Vimpelcom_NNov_MSS8(5371),61
+Vimpelcom_NNov_MSS7(5370),30
+Vimpel_Oren_Zona(5289),30
+Vimpel_Penza_Zon(5288),30
+Vimpel_Saratov(5298),30
+Vimpel_SRT_Zona(5302),30
+Vimpel_ULK_Zona(5299),30
+VimpelCom_Igevsk(5250),30
+VimpelCom_Ioshkar-Ola(5266),30
+VimpelCom_Penza(5253),30
+VimpelCom_Perm(5226),30
+VimpelCom_Saransk(5261),30
+Vimpelcom_Ufa(5252),30
+Vimpelkom_Kanash(5232),30
+Vimpelkom_Kazan(5290),30
+Vimpelkom_Kirov(5235),30
+VimpelKom_Ruzaev_Zon(5339),30
+Vimpelkom_Saratov-SP(5298),30
+Vimpelkom_Toliaty_SP(5333),30
+Vimpelkom_Ulyanovsk(5234),30
+VolgaTel_Cheboks(5205),31
+VolgaTel_IoshOla(5208),31
+VolgaTel_Kirov(5203),31
+VolgaTel_NigNovg(5207),62
+VolgaTel_Orenbur(5206),61
+VolgaTel_Penza(5211),31
+VolgaTel_Samara(5202),90
+VolgaTel_Saransk(5209),31
+VolgaTel_Saratov(5212),30
+VolgaTel_Tolyatt(5213),31
+VolgaTel_Ulyanov(5210),31
+VolgaTTK_Sarat_2(426),350
+VolgaTTK(418),240
+Tele2-Samara_IN(5354),30
+Tele2-Samara_OUT(5355),31
+Tele2_PermINOOT(5275),31
+Tele2_PermIN(5276),123
+MTS-Kazan-2(5359),30
+T2_Penza_IN(5364),61
+T2_Penza_OUT(5365),30
+Iridium Comm(5360),30
+T2_Saratov_IN(5366),61
+T2_Saratov_OUT(5367),62
+T2_Ulianovsk_IN(5368),61
+T2_Ulianovsk_OUT(5369),61
+ER-Telecom NN(428),30
+Vimpelcom_Saratov2(5372),30
+ER-Telecom-Sar(427),30
+ER-Tel-Penza(429),30
+ER-Tel-Orenburg(430),30
+ER-Telec-Samara(431),30
+Orang_NN_Zona(432),30
+UFANET(5220),29
+VimpelCom Perm(5226),30
+Vympelcom_Ijevsk(5250),30
+Orange_Sma_Zona(434),30
+UFANET_ORENBURG(5388),30

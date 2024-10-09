@@ -1,0 +1,35 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Загрузка стыков</title>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+</head>
+<body>
+<div class="background-text" id="container"></div>
+<div class="container">
+    <button id="backToStartButton" class="btn back-to-start">В начало</button>
+    <h1>Загрузка стыков</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <div class="file-input-container">
+            <label for="fileInput" class="file-input-label">Выберите 12 CSV файлов для загрузки:</label>
+            <input type="file" id="fileInput" name="files" accept=".csv" multiple required>
+            <div id="selectedFiles"></div>
+        </div>
+        <button type="submit" class="btn" id="uploadButton">Загрузить файлы</button>
+    </form>
+    <div id="message"></div>
+    <button id="calculateButton" class="btn" style="display: none;">
+        Посчитать загрузку
+        <div class="loader" id="calculateLoader"></div>
+    </button>
+    <div id="resultMessage"></div>
+    <button id="downloadButton" class="btn" style="display: none;">
+        Получить итоговые файлы
+        <div class="loader" id="downloadLoader"></div>
+    </button>
+</div>
+
+<script src="/static/script.js"></script>
+</body>
+</html>

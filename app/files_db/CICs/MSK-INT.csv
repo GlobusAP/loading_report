@@ -1,0 +1,90 @@
+To SPB-NAT M(112),61
+To SMA-NAT M(114),61
+To RND-NAT M(113),61
+To NSK-NAT M(116),61
+To MSK-NAT M(111),154
+To KBK-NAT M(117),61
+To IRK-INT M(104),30
+To CLK-NAT M(115),61
+To CLK-INT M(103),247
+To SPB-INT(102),30
+Tata-America_SP2(234),270
+EXATEL(288),61
+Beltelecom(203),278
+Rostelecm_MN_OUT(228),402
+Megafon_MSK_MN_IN(240),247
+Lexico(449),335
+Oblcom_Swiss(250),61
+Megafon_MSK_MN_OUT(251),155
+Megafon_MSK_MG(252),92
+MTT_MSK_MN(241),61
+Ecotelecom(404),67
+Megafon_MSK_MG2(253),62
+Unitel(405),335
+China Telecom_GZU(260),90
+China Telecom_SHI(262),120
+AzInTelecom(439),80
+Kirgiztelecom(436),134
+MTS_MSK_MN(263),463
+Mobinet LLC(431),67
+TurkTelekom(407),134
+TVI-Connect-MSK(443),500
+Call-O-Call(429),67
+Romtelecom_Buharest(266),61
+Romtelecom_Brasov(268),61
+Altmedia Telecom(434),402
+Altmedia-Tel-2(428),134
+Exatel(424),67
+Aquafon-GSM(276),61
+Astel(411),67
+AzlnTelecom(459),670
+HGC(484),134
+HGC2(483),201
+Vimpelcom_MNnew(214),650
+Vimpelcom_DEFnew(278),92
+Kaztranscom(452),660
+Kaztranscom_inet(448),660
+Sipnet(468),1300
+Tata-America_SP(236),29
+TNS-PLUS_Almata(216),618
+TNS-PLUS_Astana(218),309
+Indigo(421),335
+Sipnet-2(406),1200
+TNS1(425),500
+TNS2(426),250
+Viber(420),350
+ROVEX(463),134
+TG_TRANZIT(494),335
+China_Telecom(437),335
+Brilliant_Telcm(433),335
+Kazakhtelekom_Astana(212),61
+CITIC(423),67
+TTK_Kazahstan(289),30
+Arelion Sweden(416),100
+Abhazsvyz(430),335
+Viber(432),335
+KT Corporation(460),335
+RTK-PL(229),31
+China Mobile 12062(290),92
+China Mobile 12063(291),92
+Vimpelcom_DEFnew_res(292),31
+Cellcom(403),335
+MTT_MSK_INT2(293),93
+MTT_MSK_INT3(294),62
+UzbekTelecom(408),250
+Deutsche_T(vpn)(409),150
+Orange(414),200
+Nobel(415),120
+Aquafon(417),335
+IBASIS(418),400
+Apollo-USA-2(427),30
+SIA Tet(438),100
+IPVOIP-sip(440),45
+M800 Limited(402),199
+Capital Exotic(441),10
+Capital CSL(442),360
+TATA Comm(444),1
+NCOT(Int)(445),100
+Deutshe Telecom(446),30
+INTERCONNECT LTD(490),120
+Cetin(410),120
