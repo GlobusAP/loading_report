@@ -1,3 +1,8 @@
+RostelecomMGnew(1383),31
+To Satel_CLK_INT(107),30
+To Satel_MSK_INT(105),61
+To Satel_SPB_INT(106),30
+Satel_MZTS_MSK(119),30
 Vimpelkom_Ryazan(1245),30
 Vimpelkom_Lipeck(1252),123
 Vimpelkom_Kursk(1247),30
@@ -52,7 +57,6 @@ MANGO_Tel_MSK_Zone(1232),30
 Oblkom_MSK(1265),30
 MTT (Local)(1224),61
 MTC_Lipeck(1293),30
-MTC_Smolensk(1294),30
 Megafon_MSK_Zona(1297),30
 CentrTel_Yaros(1299),32
 Sovintel_Msk_MG2(1300),371
@@ -145,7 +149,6 @@ TELE2_Smolensk1_IN(1412),185
 TELE2_Smolensk1_OUT(1413),154
 Sotkom(1416),30
 Vimpelkom_Moscow(1277),308
-MTC_Tambov(1295),30
 Megafon_Belgorod(1417),30
 TELE2_Belgorod_OUT(1418),464
 TELE2_Belgorod_IN(1419),464
@@ -162,7 +165,6 @@ MTC_Yaroslavl(1307),30
 Zona_Si2000_2(1317),155
 D-2(8-800)(431),60
 Internet (8-800)(432),60
-Vokzal Info(800)(433),60
 milcom(8-800)(434),60
 IT Biznes(435),270
 Inf_communic(439),30
@@ -238,4 +240,3 @@ Rostelecom_Solnechnogosk(1217),62
 Kvantum-Kyrsk_Zona(1225),1
 Kvantum-ORel_Zona(1237),1
 Vimpelcom_Moscow(1331),308
-,35084

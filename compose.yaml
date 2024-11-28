@@ -1,0 +1,65 @@
+version: '3.9'
+
+services:
+  load_calc:
+    container_name: "load_calc"
+    image: "load_calc"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres_db
+
+  postgres_db:
+    container_name: "postgres_db"
+    image: postgres:16-alpine
+    env_file:
+      - .env
+    restart: no
+    ports:
+      - "5432:5432"
+    volumes:
+      - 'loading_report-postgres:/var/lib/postgresql/data'
+
+  pgadmin:
+    image: dpage/pgadmin4:8.9
+    restart: "no"
+    ports:
+      - "8080:80"
+    env_file:
+      - .env
+    volumes:
+      - "loading_report-pgadmin:/var/lib/pgadmin"
+    depends_on:
+      - postgres_db
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./app/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - load_calc
+
+  alembic:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres_db
+    entrypoint: ["alembic"]
+    command: ["upgrade", "head"]
+
+
+volumes:
+  loading_report-pgadmin:
+  loading_report-postgres:
+
+networks:
+  custom:
+    driver: bridge

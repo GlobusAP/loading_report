@@ -94,7 +94,6 @@ To SPB-NAT S(512),61
 To TatTelecom(5200),91
 TRK_TVT_Kazan(5324),30
 TTK-NN(421),300
-Ulianovsk_GSM_1(5220),61
 Ural-Orenburg(5219),30
 Ural-TTK Perm(5296),123
 UralSvInf_Perm(5214),62
@@ -105,13 +104,10 @@ Vimpelcom_NNov_MSS8(5371),61
 Vimpelcom_NNov_MSS7(5370),30
 Vimpel_Oren_Zona(5289),30
 Vimpel_Penza_Zon(5288),30
-Vimpel_Saratov(5298),30
 Vimpel_SRT_Zona(5302),30
 Vimpel_ULK_Zona(5299),30
-VimpelCom_Igevsk(5250),30
 VimpelCom_Ioshkar-Ola(5266),30
 VimpelCom_Penza(5253),30
-VimpelCom_Perm(5226),30
 VimpelCom_Saransk(5261),30
 Vimpelcom_Ufa(5252),30
 Vimpelkom_Kanash(5232),30

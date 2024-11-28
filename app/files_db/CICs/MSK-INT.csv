@@ -1,3 +1,6 @@
+404(404),1
+Rostelecom_MN_IN(233),1
+KazkhAstana(295),30
 To SPB-NAT M(112),61
 To SMA-NAT M(114),61
 To RND-NAT M(113),61
@@ -18,7 +21,6 @@ Oblcom_Swiss(250),61
 Megafon_MSK_MN_OUT(251),155
 Megafon_MSK_MG(252),92
 MTT_MSK_MN(241),61
-Ecotelecom(404),67
 Megafon_MSK_MG2(253),62
 Unitel(405),335
 China Telecom_GZU(260),90

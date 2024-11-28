@@ -1,13 +1,17 @@
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime
+
 import pandas as pd
 from fastapi import HTTPException, status
 from openpyxl import load_workbook
-from datetime import datetime
 
+from app.operators_db.methods_dao import select_operators_by_name
 from app.utils.files import get_path
 
 
 class ReportExcel:
-    def __init__(self, path_in, path_out):
+    def __init__(self, path_in=None, path_out=None):
         self.path_in = path_in
         self.path_out = path_out
 
@@ -38,24 +42,19 @@ class ReportExcel:
 
     @staticmethod
     async def _get_operators_cic(name):
-        with open(f'app/files_db/CICs/{name}.csv', 'r', encoding='utf-8') as file:
-            res = file.read()
-            operators_cic = {}
-            for line in res.splitlines():
-                k, v = line.split(',')
-
-                operators_cic[k] = int(v)
-            return operators_cic
+        cics = await select_operators_by_name(name)
+        operators_cics = {cic.name: cic.CIC for cic in cics}
+        return operators_cics
 
     async def _dict_result(self, name):
-        operators_cic = await self._get_operators_cic(name)
         dict_result = {}
         dict_overload = {}
         not_counted = []
+        operators_cics = await self._get_operators_cic(name)
 
         for operator in self.df_sum:
-            if operator in operators_cic:
-                values = [float(format(i / operators_cic.get(operator), '.4f'))
+            if operator in operators_cics:
+                values = [float(format(i / operators_cics.get(operator), '.4f'))
                           for i in list(self.df_sum[operator].values)]
                 dict_result[operator] = values
                 if any(map(lambda x: x >= 0.6, values)):
@@ -83,7 +82,7 @@ class ReportExcel:
         return {'not_counted': dict_result['not_counted']}
 
     @staticmethod
-    async def coloring_values(df):
+    def coloring_values(df):
         def highlight_value(value):
             if value >= 1:
                 return 'color: white'
@@ -110,40 +109,49 @@ class ReportExcel:
                 ws.column_dimensions[column].width = desired_width
         wb.save(path)
 
-    async def write_overload(self, path, name):
+    def write_overload(self, path, name):
         try:
             with pd.ExcelWriter(path, mode='a', if_sheet_exists="overlay") as writer:
-                df_overload = await self.coloring_values(self.df_overload)
+                df_overload = self.coloring_values(self.df_overload)
                 df_overload.to_excel(writer, sheet_name=f'Отчет {name}')
-        except FileNotFoundError as e:
+        except FileNotFoundError:
             with pd.ExcelWriter(path, mode='w') as writer:
-                df_overload = await self.coloring_values(self.df_overload)
+                df_overload = self.coloring_values(self.df_overload)
                 df_overload.to_excel(writer, sheet_name=f'Отчет {name}')
         finally:
             self.set_column_width(path=path, sheet_name=f'Отчет {name}', columns=df_overload.columns)
 
-    async def write_exel(self, path, name):
+    def write_exel(self, path, name):
         with pd.ExcelWriter(path, mode='a', if_sheet_exists="overlay") as writer:
             self.df_in.to_excel(writer, sheet_name=f'Общая статистика {name}')
             self.df_out.to_excel(writer, startrow=26, sheet_name=f'Общая статистика {name}')
             self.df_sum.to_excel(writer, startrow=26 * 2, sheet_name=f'Общая статистика {name}')
-            styled_df = await self.coloring_values(self.df_result)
+            styled_df = self.coloring_values(self.df_result)
             styled_df.to_excel(writer, startrow=26 * 3, sheet_name=f'Общая статистика {name}')
         self.set_column_width(path=path, sheet_name=f'Общая статистика {name}', columns=self.columns_all)
 
+    async def async_save_to_excel(self, path, name):
+        loop = asyncio.get_running_loop()
+        with ThreadPoolExecutor() as executor:
+            await loop.run_in_executor(executor, self.write_overload, path, name)
+            await loop.run_in_executor(executor, self.write_exel, path, name)
+
     async def get_result(self, name):
+        path = await get_path(default_path='app/files_db/results')
         df_maker = await self._df_maker(name)
-        path = f'app/files_db/results/{name.split("-")[0]}_{self.date.date()}.xlsx'
-        if name == 'RND' or name == 'SMA':
-            path = f'app/files_db/results/SMA_RND_{self.date.date()}.xlsx'
-        await self.write_overload(path, name)
-        await self.write_exel(path, name)
+
+        if name == 'RND-NAT' or name == 'SMA-NAT':
+            path = f'{path}/SMA_RND_{self.date.date()}.xlsx'
+        else:
+            path = f'{path}/{name.split("-")[0]}_{self.date.date()}.xlsx'
+        await self.async_save_to_excel(path, name)
         return df_maker
 
 
 async def calculate_load():
-    path = get_path()
-    nodes = [('SPB-NAT', 'SPB-INT'), ('MSK-NAT', 'MSK-INT'), ('RND', 'SMA')]
+    start = datetime.now()
+    path = await get_path()
+    nodes = [('SPB-NAT', 'SPB-INT'), ('MSK-NAT', 'MSK-INT'), ('RND-NAT', 'SMA-NAT')]
     not_counted = {}
 
     for node in nodes:
@@ -155,4 +163,38 @@ async def calculate_load():
             not_counted[node[0]] = first_node.get('not_counted')
         if second_node.get('not_counted'):
             not_counted[node[1]] = second_node.get('not_counted')
+    print(datetime.now() - start, 'calculate_load')
     return not_counted
+
+# def calculate_load(args):
+#     cics_node_0, cics_node_1, path, nodes = args
+#     not_counted = {}
+#     first_node = ReportExcel(cics=cics_node_0, path_in=f'{path}/{nodes[0]}-IN.csv',
+#                              path_out=f'{path}/{nodes[0]}-OUT.csv')
+#     second_node = ReportExcel(cics=cics_node_1, path_in=f'{path}/{nodes[1]}-IN.csv',
+#                               path_out=f'{path}/{nodes[1]}-OUT.csv')
+#     first_node = first_node.get_result(nodes[0])
+#     second_node = second_node.get_result(nodes[1])
+#     if first_node.get('not_counted'):
+#         not_counted[nodes[0]] = first_node.get('not_counted')
+#     if second_node.get('not_counted'):
+#         not_counted[nodes[1]] = second_node.get('not_counted')
+#     return not_counted
+#
+#
+# async def run_blocking_io():
+#     executor = ThreadPoolExecutor(max_workers=5)
+#     loop = asyncio.get_running_loop()
+#     path = get_path()
+#     nodes = [('SPB-NAT', 'SPB-INT'), ('MSK-NAT', 'MSK-INT'), ('RND-NAT', 'SMA-NAT')]
+#     not_counted = {}
+#     for node in nodes:
+#         cics_0 = await select_operators_by_name(node[0])
+#         cics_1 = await select_operators_by_name(node[1])
+#         operators_cic_0 = {operator.name: operator.CIC for operator in cics_0}
+#         operators_cic_1 = {operator.name: operator.CIC for operator in cics_1}
+#         result = await loop.run_in_executor(
+#             executor, calculate_load, (
+#                 operators_cic_0, operators_cic_1, path, node))
+#         not_counted.update(result)
+#     return not_counted

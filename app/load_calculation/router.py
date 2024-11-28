@@ -1,8 +1,8 @@
 from typing import List
 
-from fastapi import APIRouter, Request, UploadFile, Depends
+from fastapi import APIRouter, Request, UploadFile, HTTPException
+from fastapi.responses import StreamingResponse
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import JSONResponse, StreamingResponse
 
 from app.utils.base import calculate_load
 from app.utils.files import load_file, get_result_path, get_zip_file
@@ -20,13 +20,20 @@ async def get_main_page(request: Request):
 async def upload_files(files: List[UploadFile]):
     for file in files:
         await load_file(file)
-    return JSONResponse(
-        content={"success": True, "message": "Файлы успешно загружены!."}, status_code=200)
+    return {"success": True, "message": "Файлы успешно загружены!!!."}
 
 
 @router.get('/result')
-async def make_result(not_counted: dict = Depends(calculate_load)):
-    return JSONResponse(content={'success': True, 'not_counted': not_counted})
+async def make_result():
+    try:
+        not_counted = await calculate_load()
+
+        return {'success': True, 'not_counted': not_counted}
+    except FileNotFoundError as e:
+        print(e)
+        file = e.filename.split('/')[-1]
+        raise HTTPException(status_code=422,
+                            detail=f'Неверно назван исходный файл, должен называться: {file}')
 
 
 @router.get('/download_files')

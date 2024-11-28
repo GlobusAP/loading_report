@@ -85,6 +85,7 @@
                         for (const [key, value] of Object.entries(data.not_counted)) {
                             notCountedMessage += `${key}: ${value}\n`;
                         }
+                        resultMessageElement.className = 'error';
                         resultMessageElement.textContent += '\n\n' + notCountedMessage;
                     }
                 } else if (data.detail) {
@@ -152,3 +153,6 @@
         backToStartButton.addEventListener('click', function() {
             window.location.href = '/load';
         });
+
+
+
