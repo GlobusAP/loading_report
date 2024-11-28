@@ -1,0 +1,363 @@
+<html>
+<head>
+    <title>Операторы</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff; /* Lighter, modern blue background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden; /* Prevent body scrolling */
+        }
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh; /* Limit height to 90% of viewport height */
+            overflow-y: auto; /* Enable vertical scrolling */
+            position: relative; /* For proper scrolling */
+            scroll-behavior: smooth; /* Add smooth scrolling behavior */
+        }
+        .container::after {
+            content: '';
+            display: block;
+            padding-bottom: 2rem; /* Add some padding at the bottom to ensure last elements are visible */
+        }
+        h1, h3 {
+            color: #4a4a4a;
+            text-align: center;
+        }
+        .load-link {
+            display: block;
+            background-color: #2196F3; /* Modern blue */
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem;
+            border-radius: 4px;
+            text-align: center;
+            margin-bottom: 1rem;
+            transition: background-color 0.3s;
+        }
+        .load-link:hover {
+            background-color: #1976D2; /* Darker blue on hover */
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        label {
+            font-weight: bold;
+            color: #4a4a4a;
+        }
+        select, input {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50; /* Modern green */
+            color: white;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #e7f3fe;
+            border: 1px solid #b3d8ff;
+            border-radius: 4px;
+        }
+        .loading {
+            text-align: center;
+            color: #4a4a4a;
+            font-style: italic;
+        }
+        .error {
+            color: #d32f2f;
+            font-weight: bold;
+            background-color: #ffebee;
+            padding: 0.5rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+        }
+        .success {
+            background-color: #e8f5e9;
+            border: 1px solid #a5d6a7;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+        }
+        .success h3 {
+            color: #2e7d32;
+            margin-top: 0;
+        }
+        .success p {
+            margin: 0.5rem 0;
+        }
+        #addTgForm, #editTgForm {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #fff3e0;
+            border: 1px solid #ffe0b2;
+            border-radius: 4px;
+        }
+        #editButton {
+            display: none;
+            margin-top: 1rem;
+            width: 100%;
+            background-color: #2196F3;
+        }
+        #editButton:hover {
+            background-color: #1976D2;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="/load" class="load-link">Загрузка стыков</a>
+    <h1>Выберите узел и номер ТГ</h1>
+    <form id="paramForm">
+        <label for="node">Узел:</label>
+        <select id="node" name="node" required>
+            <option value="">Выберите узел</option>
+        </select>
+
+        <label for="tgNumber">Номер ТГ:</label>
+        <input type="text" id="tgNumber" name="tgNumber" required>
+
+        <button type="submit" id="submitBtn">Проверить ТГ</button>
+    </form>
+    <div id="result"></div>
+
+    <div id="addTgForm">
+        <h3>Добавить ТГ?</h3>
+        <form id="newTgForm">
+            <label for="tgName">Имя ТГ:</label>
+            <input type="text" id="tgName" name="tgName" required>
+
+            <label for="tgChannels">Количество г.к.:</label>
+            <input type="number" id="tgChannels" name="tgChannels" required min="1">
+
+            <button type="submit">Добавить</button>
+        </form>
+    </div>
+
+    <button id="editButton" style="display: none;">Изменить?</button>
+
+    <div id="editTgForm" style="display: none;">
+        <h3>Изменить данные ТГ</h3>
+        <form id="editForm">
+            <label for="newOperatorName">Новое имя оператора:</label>
+            <input type="text" id="newOperatorName" name="newOperatorName">
+
+            <label for="newChannelCount">Количество голосовых каналов:</label>
+            <input type="number" id="newChannelCount" name="newChannelCount" min="1">
+
+            <button type="submit">Сохранить изменения</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const selectElement = document.getElementById('node');
+        const resultDiv = document.getElementById('result');
+        const addTgForm = document.getElementById('addTgForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const editButton = document.getElementById('editButton');
+        const editTgForm = document.getElementById('editTgForm');
+
+        // Загрузка данных для выпадающего списка узлов
+        fetch('/operators/choices')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Ошибка при загрузке данных для списка узлов');
+                }
+                return response.json();
+            })
+            .then(data => {
+                data.choices.forEach(choice => {
+                    const option = document.createElement('option');
+                    option.value = choice.id;
+                    option.textContent = choice.name;
+                    selectElement.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Ошибка загрузки данных:', error);
+                resultDiv.innerHTML = `<p class="error">Ошибка загрузки данных для списка узлов: ${error.message}</p>`;
+            });
+
+        // Обработчик кнопки "Изменить?"
+        editButton.addEventListener('click', function() {
+            editButton.style.display = 'none';
+            editTgForm.style.display = 'block';
+        });
+
+        // Обработка отправки основной формы
+        document.getElementById('paramForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const node = selectElement.value;
+            const tgNumber = document.getElementById('tgNumber').value;
+
+            resultDiv.innerHTML = '<p class="loading">Загрузка данных...</p>';
+            editButton.style.display = 'none';
+            editTgForm.style.display = 'none';
+
+            fetch(`/operators/get_operator?param1=${encodeURIComponent(node)}&param2=${encodeURIComponent(tgNumber)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => {
+                            throw new Error(err.detail || `HTTP error! status: ${response.status}`);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            <h3>Информация об операторе:</h3>
+                            <p><strong>Оператор:</strong> ${data.operator_name}</p>
+                            <p><strong>Номер ТГ:</strong> ${data.tg_number}</p>
+                            <p><strong>Количество голосовых каналов:</strong> ${data.cic}</p>
+                        </div>
+                    `;
+                    addTgForm.style.display = 'none';
+                    editButton.style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Ошибка при выполнении запроса:', error);
+                    resultDiv.innerHTML = `<p class="error">Ошибка: ${error.message}</p>`;
+                    if (error.message === "Нет такой ТГ в БД") {
+                        addTgForm.style.display = 'block';
+                    } else {
+                        addTgForm.style.display = 'none';
+                    }
+                    editButton.style.display = 'none';
+                    editTgForm.style.display = 'none';
+                });
+        });
+
+        // Обработка отправки формы добавления новой ТГ
+        document.getElementById('newTgForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const tgName = document.getElementById('tgName').value;
+            const tgChannels = parseInt(document.getElementById('tgChannels').value);
+            const node = selectElement.value;
+            const tgNumber = document.getElementById('tgNumber').value;
+
+            if (tgChannels <= 0) {
+                resultDiv.innerHTML = '<p class="error">Количество голосовых каналов должно быть больше 0</p>';
+                return;
+            }
+
+            const data = {
+                tg_number: parseInt(tgNumber),
+                name: tgName,
+                CIC: tgChannels,
+                node_id: parseInt(node)
+            };
+
+            fetch('/operators/add_operator', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => {
+                        throw new Error(err.detail || `HTTP error! status: ${response.status}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+                resultDiv.innerHTML = '<p class="success">Новая ТГ успешно добавлена!</p>';
+                addTgForm.style.display = 'none';
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                resultDiv.innerHTML = `<p class="error">Ошибка при добавлении новой ТГ: ${error.message}</p>`;
+            });
+        });
+
+        // Add new handler for edit form submission
+        document.getElementById('editForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const node = selectElement.value;
+            const tgNumber = document.getElementById('tgNumber').value;
+            const newOperatorName = document.getElementById('newOperatorName').value;
+            const newChannelCount = document.getElementById('newChannelCount').value;
+
+            // Only include fields that have values
+            const data = {
+                tg_number: parseInt(tgNumber),
+                node_id: parseInt(node)
+            };
+
+            if (newOperatorName) {
+                data.name = newOperatorName;
+            }
+
+            if (newChannelCount) {
+                if (parseInt(newChannelCount) <= 0) {
+                    resultDiv.innerHTML = '<p class="error">Количество голосовых каналов должно быть больше 0</p>';
+                    return;
+                }
+                data.CIC = parseInt(newChannelCount);
+            }
+
+            fetch('/operators/update_operator', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => {
+                        throw new Error(err.detail || `HTTP error! status: ${response.status}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+                resultDiv.innerHTML = '<p class="success">Данные ТГ успешно обновлены!</p>';
+                editTgForm.style.display = 'none';
+
+                // Refresh the display by triggering a new search
+                document.getElementById('paramForm').dispatchEvent(new Event('submit'));
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                resultDiv.innerHTML = `<p class="error">Ошибка при обновлении ТГ: ${error.message}</p>`;
+            });
+        }); // Close editForm submit handler
+    }); // Close DOMContentLoaded handler
+</script>
+</body>
+</html>
