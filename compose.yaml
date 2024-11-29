@@ -43,6 +43,8 @@ services:
       - "80:80"
     volumes:
       - ./app/conf.d:/etc/nginx/conf.d
+      - ./ssl/agloba.crt:/etc/ssl/agloba.crt
+      - ./ssl/agloba.key:/etc/ssl/agloba.key
     depends_on:
       - load_calc
 
