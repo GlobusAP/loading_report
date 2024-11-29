@@ -13,6 +13,8 @@ services:
       - "8000:8000"
     depends_on:
       - postgres_db
+    networks:
+      - custom
 
   postgres_db:
     container_name: "postgres_db"
@@ -24,6 +26,8 @@ services:
       - "5432:5432"
     volumes:
       - 'loading_report-postgres:/var/lib/postgresql/data'
+    networks:
+      - custom
 
   pgadmin:
     image: dpage/pgadmin4:8.9
@@ -36,6 +40,8 @@ services:
       - "loading_report-pgadmin:/var/lib/pgadmin"
     depends_on:
       - postgres_db
+    networks:
+      - custom
 
   nginx:
     image: nginx:alpine
@@ -43,10 +49,11 @@ services:
       - "80:80"
     volumes:
       - ./app/conf.d:/etc/nginx/conf.d
-      - ./ssl/agloba.crt:/etc/ssl/agloba.crt
-      - ./ssl/agloba.key:/etc/ssl/agloba.key
+      - ./ssl:/etc/ssl/
     depends_on:
       - load_calc
+    networks:
+      - custom
 
   alembic:
     build:
