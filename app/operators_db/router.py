@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.requests import Request
 from fastapi.templating import Jinja2Templates
 
@@ -12,8 +12,9 @@ from app.operators_db.methods_dao import (
     check_base
 )
 from app.operators_db.schemas import SNodeAdd, SOperatorAdd, SOperatorGet, SOperatorUpdate
+from app.users.dependensies import get_current_user
 
-router = APIRouter(prefix='/operators', tags=['Работа с базой данных'])
+router = APIRouter(prefix='/operators', tags=['Работа с базой данных'], dependencies=[Depends(get_current_user)])
 
 templates = Jinja2Templates(directory="app/templates")
 

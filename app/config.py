@@ -18,6 +18,7 @@ class DB:
 class JWT:
     secret_key: str
     algorithm: str
+    expire: int
 
 
 @dataclass
@@ -39,6 +40,7 @@ def load_config(path: str | None = None) -> Config:
         ),
         jwt_token=JWT(
             secret_key=env('SECRET_KEY'),
-            algorithm=env('ALGORITHM')
+            algorithm=env('ALGORITHM'),
+            expire=env('ACCESS_TOKEN_EXPIRE_MINUTES')
         )
     )

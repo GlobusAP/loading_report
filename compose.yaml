@@ -44,9 +44,10 @@ services:
       - custom
 
   nginx:
-    image: nginx:alpine
+    image: nginx:latest
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./app/conf.d:/etc/nginx/conf.d
       - ./ssl:/etc/ssl/

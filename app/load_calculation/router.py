@@ -1,13 +1,15 @@
 from typing import List
 
-from fastapi import APIRouter, Request, UploadFile, HTTPException
+from fastapi import APIRouter, Request, UploadFile, HTTPException, Depends
 from fastapi.responses import StreamingResponse
 from fastapi.templating import Jinja2Templates
 
 from app.utils.base import calculate_load
 from app.utils.files import load_file, get_result_path, get_zip_file
+from app.users.dependensies import get_current_user
 
-router = APIRouter(prefix='/load', tags=['Расчет загрузки и формирование файлов'])
+router = APIRouter(prefix='/load', tags=['Расчет загрузки и формирование файлов'],
+                   dependencies=[Depends(get_current_user)])
 templates = Jinja2Templates(directory='app/templates')
 
 
@@ -30,7 +32,6 @@ async def make_result():
 
         return {'success': True, 'not_counted': not_counted}
     except FileNotFoundError as e:
-        print(e)
         file = e.filename.split('/')[-1]
         raise HTTPException(status_code=422,
                             detail=f'Неверно назван исходный файл, должен называться: {file}')
